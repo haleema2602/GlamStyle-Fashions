@@ -1,0 +1,125 @@
+-- Create Database
+CREATE DATABASE glamstylefashions;
+USE glamstylefashions;
+
+
+ 
+INSERT INTO roles (name) VALUES ('USER');
+INSERT INTO roles (name) VALUES ('ADMIN');
+
+-- Cart Table
+CREATE TABLE cart (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    product_id INT,
+    quantity INT DEFAULT 1,
+    added_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+
+
+-- Contact Us Table
+CREATE TABLE contactUs(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    message TEXT,
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ 
+ 
+CREATE TABLE blogs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ create table users (
+   id bigint unsigned not null auto_increment,
+  phone_number varchar(20) not null,
+  email varchar(256) not null,
+  password varchar(64) not null,
+  first_name varchar(60) not null,
+  last_name varchar(60) not null,
+  created_at timestamp default current_timestamp,
+  constraint pk_users primary key (id),
+  constraint uq_users_email unique (email),
+  constraint uq_users_phone_number unique (phone_number)
+  );
+
+
+ create table roles (
+  id bigint unsigned not null auto_increment,
+   name varchar(45) not null,
+  constraint pk_roles primary key (id),
+  constraint uq_roles_name unique (name)
+);
+
+
+ create table users_roles (
+  user_id bigint unsigned not null,
+  role_id bigint unsigned not null,
+  constraint pk_users_roles primary key (user_id, role_id),
+  constraint fk_users_roles_user foreign key (user_id) references users(id),
+  constraint fk_users_roles_role foreign key (role_id) references roles(id)
+);
+
+
+
+
+ CREATE TABLE products (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    description TEXT NOT NULL,
+    quantity VARCHAR(50) NOT NULL,
+    price VARCHAR(12) NOT NULL,
+    image VARCHAR(200) NOT NULL,
+    title VARCHAR(30) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+
+ create table contact_us(
+	id bigint unsigned not null auto_increment,
+	contact_us_users_id bigint unsigned not null,
+	full_name varchar(150) not null,
+	email varchar(256) not null,
+	message text not null,
+	constraint pk_contact_us primary key(id),
+	constraint fk_contact_us_users_id foreign key(contact_us_users_id) references users(id)
+	);
+
+
+CREATE TABLE orders (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    product_title VARCHAR(255) NOT NULL,
+    product_price DECIMAL(10,2) NOT NULL,
+    product_image VARCHAR(255) NOT NULL,
+    product_size VARCHAR(20) NOT NULL,
+    product_color VARCHAR(50) NOT NULL,
+    special_notes TEXT,
+    customer_name VARCHAR(150) NOT NULL,
+    customer_contact VARCHAR(15) NOT NULL,
+    customer_address TEXT NOT NULL,
+    payment_method VARCHAR(50) DEFAULT 'COD',
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE order_items (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT UNSIGNED NOT NULL,
+    product_name VARCHAR(255) NOT NULL,
+    quantity INT UNSIGNED NOT NULL DEFAULT 1,
+    price DECIMAL(10,2) NOT NULL,
+    total_price DECIMAL(10,2) AS (quantity * price) STORED,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+);
