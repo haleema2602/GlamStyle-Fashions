@@ -1,0 +1,17 @@
+{
+    "name": "hp/glam-stylefashions",
+    "autoload": {
+        "psr-4": {
+            "Hp\\GlamStylefashions\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "haleema2602",
+            "email": "haleemakousardarudwale@gmail.com"
+        }
+    ],
+    "require": {
+        "razorpay/razorpay": "^2.9"
+    }
+}
